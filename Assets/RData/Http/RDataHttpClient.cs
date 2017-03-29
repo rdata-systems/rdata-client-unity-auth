@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using RData.Http.Exceptions;
+using System.Linq;
 
 namespace RData.Http
 {
@@ -52,6 +53,10 @@ namespace RData.Http
                     unityWebRequest.SetRequestHeader(headerKvp.Key, headerKvp.Value);
                 }
             }
+
+            string parametersDebug = request.Parameters == null ? "none" : string.Join("&", request.Parameters.Select(x => x.Key + "=" + x.Value).ToArray());
+            string headersDebug = request.Headers == null ? "none" : string.Join("; ", request.Headers.Select(x => x.Key + "=" + x.Value).ToArray());
+            Debug.Log(string.Format("RDataHttpClient Send, Method: {0}, Path: {1}, Parameters: [{2}], Headers: [{3}], BodyData: {4}", request.Method, request.Path, parametersDebug, headersDebug, request.BodyData));
 
             yield return unityWebRequest.Send();
 
@@ -103,6 +108,8 @@ namespace RData.Http
                 request.Error = new RDataHttpException(string.Format("Http request {0} failed with unknown status code: {1}", request.Path, unityWebRequest.responseCode));
                 yield break;
             }
+
+            Debug.Log(string.Format("RDataHttpClient Recv, Method: {0}, Path: {1}, Response: {2}", request.Method, request.Path, unityWebRequest.downloadHandler.text));
 
             // Everything is fine at this point
         }

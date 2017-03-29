@@ -41,3 +41,5 @@ bin/
 !RDataAuthClassLibrary.sln
 Assets/Plugins/RData.dll
 Assets/Plugins/RData.dll.meta
+Assets/Plugins/websocket-sharp.dll
+Assets/Plugins/websocket-sharp.dll.meta

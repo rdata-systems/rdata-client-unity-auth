@@ -139,6 +139,25 @@ namespace RData.Authentication
             SaveToPlayerPrefs();
         }
 
+        public IEnumerator Register(string username, string email, string password)
+        {
+            // Send registration request
+            var localRegistrationRequest = new RegisterLocalRequest(username, email, password);
+            yield return StartCoroutine(_httpClient.Send<RegisterLocalRequest, RegisterLocalRequest.RegisterLocalResponse>(localRegistrationRequest));
+
+            if (localRegistrationRequest.HasError)
+            {
+                LastError = new RDataAuthenticationException(localRegistrationRequest.Error);
+                yield break;
+            }
+
+            if (!localRegistrationRequest.HasResponse)
+            {
+                LastError = new RDataAuthenticationException("Failed to register, http request failed but has no error");
+                yield break;
+            }
+        }
+
         public IEnumerator Revoke()
         {
             if (!Authenticated)
