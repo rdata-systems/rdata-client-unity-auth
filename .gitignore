@@ -40,5 +40,4 @@ bin/
 !RDataAuthClassLibrary.csproj
 !RDataAuthClassLibrary.sln
 Assets/Plugins/RData.dll
-
-
+Assets/Plugins/RData.dll.meta
