@@ -61,6 +61,7 @@
     <Compile Include="Assets\RData\Authentication\Exceptions\RDataAuthenticationException.cs" />
     <Compile Include="Assets\RData\Authentication\HttpRequests\AuthenticateLocalRequest.cs" />
     <Compile Include="Assets\RData\Authentication\HttpRequests\RefreshRequest.cs" />
+    <Compile Include="Assets\RData\Authentication\HttpRequests\RegisterLocalRequest.cs" />
     <Compile Include="Assets\RData\Authentication\HttpRequests\RevokeRequest.cs" />
     <Compile Include="Assets\RData\Authentication\JsonRpcRequests\JwtAuthorizationRequest.cs" />
     <Compile Include="Assets\RData\Authentication\JwtAccessToken.cs" />
