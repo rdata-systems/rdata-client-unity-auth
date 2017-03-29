@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A8F4B5D2-9A3C-4892-B845-06553B8A8E37}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>RDataAuthClassLibrary</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>RData</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JWT, Version=1.3.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assets\Plugins\JWT.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="RData, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assets\Plugins\RData.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>$(ProgramFiles)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\RData\Authentication\Exceptions\RDataAuthenticationException.cs" />
+    <Compile Include="Assets\RData\Authentication\HttpRequests\AuthenticateLocalRequest.cs" />
+    <Compile Include="Assets\RData\Authentication\HttpRequests\RefreshRequest.cs" />
+    <Compile Include="Assets\RData\Authentication\HttpRequests\RevokeRequest.cs" />
+    <Compile Include="Assets\RData\Authentication\JsonRpcRequests\JwtAuthorizationRequest.cs" />
+    <Compile Include="Assets\RData\Authentication\JwtAccessToken.cs" />
+    <Compile Include="Assets\RData\Authentication\JwtAuthenticationClient.cs" />
+    <Compile Include="Assets\RData\Authentication\JwtAuthorizationStrategy.cs" />
+    <Compile Include="Assets\RData\Authentication\JwtRefreshToken.cs" />
+    <Compile Include="Assets\RData\Authentication\JwtSession.cs" />
+    <Compile Include="Assets\RData\Authentication\JwtToken.cs" />
+    <Compile Include="Assets\RData\Authentication\JwtUser.cs" />
+    <Compile Include="Assets\RData\Http\Exceptions\BadRequestException.cs" />
+    <Compile Include="Assets\RData\Http\Exceptions\ForbiddenException.cs" />
+    <Compile Include="Assets\RData\Http\Exceptions\HttpException.cs" />
+    <Compile Include="Assets\RData\Http\Exceptions\NotFoundException.cs" />
+    <Compile Include="Assets\RData\Http\Exceptions\UnauthorizedException.cs" />
+    <Compile Include="Assets\RData\Http\RDataHttpClient.cs" />
+    <Compile Include="Assets\RData\Http\RDataHttpError.cs" />
+    <Compile Include="Assets\RData\Http\RDataHttpRequest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Plugins\JWT.dll" />
+    <Content Include="Assets\Plugins\RData.dll" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>
