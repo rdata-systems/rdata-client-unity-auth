@@ -110,6 +110,12 @@ namespace RData.Authentication
             var localAuthRequest = new AuthenticateLocalRequest(username, password);
             yield return StartCoroutine(_httpClient.Send<AuthenticateLocalRequest, AuthenticateLocalRequest.AuthenticateLocalResponse>(localAuthRequest));
 
+            if(localAuthRequest.HasError && localAuthRequest.Error is RData.Http.Exceptions.UnauthorizedException)
+            {
+                LastError = new InvalidCredentialsException(localAuthRequest.Error);
+                yield break;
+            }
+
             if (localAuthRequest.HasError)
             {
                 LastError = new RDataAuthenticationException(localAuthRequest.Error);

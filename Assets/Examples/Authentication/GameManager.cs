@@ -37,6 +37,7 @@ namespace RData.Authentication.Examples
         private const string kStatusRefreshFailed = "Refresh failed";
         private const string kStatusRefreshTokenExpired = "Refresh token expired";
         private const string kStatusAuthSuccessful = "Authenticated";
+        private const string kStatusAuthFailedInvalidCredentials = "Invalid credentials";
         private const string kStatusRegistrationSuccessful = "Registered";
         private const string kStatusRevokeSuccessful = "Revoked";
         private const string kStatusRefreshSuccessful = "Refreshed";
@@ -54,7 +55,13 @@ namespace RData.Authentication.Examples
             yield return StartCoroutine(_authenticationClient.Authenticate(login, passwordInputField.text));
 
             // Check if any errors happened during authentication
-            if (_authenticationClient.HasError)
+            if(_authenticationClient.HasError && _authenticationClient.LastError is Exceptions.InvalidCredentialsException)
+            {
+                SetStatus(kStatusAuthFailedInvalidCredentials);
+                SetFormInteractable(true);
+                yield break;
+            }
+            else if (_authenticationClient.HasError)
             {
                 SetError(_authenticationClient.LastError);
                 SetStatus(kStatusAuthFailed);

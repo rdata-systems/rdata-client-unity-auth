@@ -58,6 +58,7 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\RData\Authentication\Exceptions\InvalidCredentialsException.cs" />
     <Compile Include="Assets\RData\Authentication\Exceptions\RDataAuthenticationException.cs" />
     <Compile Include="Assets\RData\Authentication\HttpRequests\AuthenticateLocalRequest.cs" />
     <Compile Include="Assets\RData\Authentication\HttpRequests\RefreshRequest.cs" />
