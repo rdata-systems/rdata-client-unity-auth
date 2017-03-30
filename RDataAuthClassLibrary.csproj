@@ -6,7 +6,7 @@
     <ProjectGuid>{A8F4B5D2-9A3C-4892-B845-06553B8A8E37}</ProjectGuid>
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>RDataAuthClassLibrary</AssemblyName>
+    <AssemblyName>RDataAuth</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
