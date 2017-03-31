@@ -58,8 +58,10 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\RData\Authentication\Exceptions\EmailTakenException.cs" />
     <Compile Include="Assets\RData\Authentication\Exceptions\InvalidCredentialsException.cs" />
     <Compile Include="Assets\RData\Authentication\Exceptions\RDataAuthenticationException.cs" />
+    <Compile Include="Assets\RData\Authentication\Exceptions\UsernameTakenException.cs" />
     <Compile Include="Assets\RData\Authentication\HttpRequests\AuthenticateLocalRequest.cs" />
     <Compile Include="Assets\RData\Authentication\HttpRequests\RefreshRequest.cs" />
     <Compile Include="Assets\RData\Authentication\HttpRequests\RegisterLocalRequest.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="Assets\RData\Http\RDataHttpClient.cs" />
     <Compile Include="Assets\RData\Http\RDataHttpError.cs" />
     <Compile Include="Assets\RData\Http\RDataHttpRequest.cs" />
+    <Compile Include="Assets\RData\Http\RDataHttpResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Plugins\JWT.dll" />
