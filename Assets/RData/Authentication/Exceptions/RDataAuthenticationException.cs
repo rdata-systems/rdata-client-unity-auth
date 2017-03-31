@@ -22,7 +22,7 @@ namespace RData.Authentication.Exceptions
         }
         
         public RDataAuthenticationException(RData.Http.Exceptions.RDataHttpException inner)
-        : base((inner.HasApiError ? inner.ApiError.message : inner.Message), inner)
+        : base((inner.HasApiError ? inner.ApiError.Message : inner.Message), inner)
         {
         }
     }

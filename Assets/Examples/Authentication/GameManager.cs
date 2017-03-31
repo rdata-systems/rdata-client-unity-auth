@@ -232,7 +232,7 @@ namespace RData.Authentication.Examples
             if (exception.InnerException is RData.Http.Exceptions.RDataHttpException && ((RData.Http.Exceptions.RDataHttpException)exception.InnerException).HasApiError)
             {
                 var err = ((RData.Http.Exceptions.RDataHttpException)exception.InnerException).ApiError;
-                errorInfo.text = string.Format("Exception: {0}, HTTP Error.name: {1}, HTTP Error.message: {2}", exception, err.name, err.message);
+                errorInfo.text = string.Format("Exception: {0}, HTTP Error.name: {1}, HTTP Error.message: {2}", exception, err.Name, err.Message);
             }
             else
             {

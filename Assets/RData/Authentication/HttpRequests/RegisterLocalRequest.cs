@@ -8,7 +8,7 @@ namespace RData.Authentication.HttpRequests
 {
     public class RegisterLocalRequest : RDataHttpRequest<RegisterLocalRequest.RegisterLocalResponse>
     {
-        public class RegisterLocalResponse
+        public class RegisterLocalResponse : RDataHttpResponse
         {
             public JwtUser user;
         }

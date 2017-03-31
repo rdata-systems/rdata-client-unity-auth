@@ -153,8 +153,26 @@ namespace RData.Authentication
 
             if (localRegistrationRequest.HasError)
             {
-                LastError = new RDataAuthenticationException(localRegistrationRequest.Error);
-                yield break;
+                if (localRegistrationRequest.Error is RData.Http.Exceptions.BadRequestException && 
+                    localRegistrationRequest.Error.HasApiError && 
+                    localRegistrationRequest.Error.ApiError.Name == "UsernameTakenError")
+                {
+                    LastError = new UsernameTakenException(localRegistrationRequest.Error);
+                    yield break;
+                }
+                else if (localRegistrationRequest.Error is RData.Http.Exceptions.BadRequestException && 
+                    localRegistrationRequest.Error.HasApiError &&
+                    localRegistrationRequest.Error.ApiError.Name == "EmailTakenError")
+                {
+                    LastError = new EmailTakenException(localRegistrationRequest.Error);
+                    yield break;
+                }
+                else
+                {
+                    // Unknown error
+                    LastError = new RDataAuthenticationException(localRegistrationRequest.Error);
+                    yield break;
+                }
             }
 
             if (!localRegistrationRequest.HasResponse)

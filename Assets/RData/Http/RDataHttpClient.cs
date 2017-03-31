@@ -21,6 +21,7 @@ namespace RData.Http
 
         public IEnumerator Send<TRequest, TResponse>(TRequest request)
             where TRequest : RDataHttpRequest<TResponse>
+            where TResponse : RDataHttpResponse
         {
             UnityWebRequest unityWebRequest;
 
@@ -66,6 +67,8 @@ namespace RData.Http
                 yield break;
             }
 
+            Debug.Log(string.Format("RDataHttpClient Recv, Method: {0}, Path: {1}, Response: {2}", request.Method, request.Path, unityWebRequest.downloadHandler.text));
+
             request.ResponseCode = unityWebRequest.responseCode;
 
             try
@@ -81,35 +84,33 @@ namespace RData.Http
             // Check if status code indicates about error
             if(unityWebRequest.responseCode == 400)
             {
-                request.Error = new BadRequestException(string.Format("Http request {0} failed with 400 Bad Request", request.Path));
+                request.Error = new BadRequestException(string.Format("Http request {0} failed with 400 Bad Request", request.Path), request.Response.Error);
                 yield break;
             }
 
             if (unityWebRequest.responseCode == 401)
             {
-                request.Error = new UnauthorizedException(string.Format("Http request {0} failed with 401 Unauthorized", request.Path));
+                request.Error = new UnauthorizedException(string.Format("Http request {0} failed with 401 Unauthorized", request.Path), request.Response.Error);
                 yield break;
             }
 
             if (unityWebRequest.responseCode == 403)
             {
-                request.Error = new ForbiddenException(string.Format("Http request {0} failed with 403 Forbidden", request.Path));
+                request.Error = new ForbiddenException(string.Format("Http request {0} failed with 403 Forbidden", request.Path), request.Response.Error);
                 yield break;
             }
 
             if (unityWebRequest.responseCode == 404)
             {
-                request.Error = new NotFoundException(string.Format("Http request {0} failed with 404 Not Found", request.Path));
+                request.Error = new NotFoundException(string.Format("Http request {0} failed with 404 Not Found", request.Path), request.Response.Error);
                 yield break;
             }
 
             if (unityWebRequest.responseCode != 200)
             {
-                request.Error = new RDataHttpException(string.Format("Http request {0} failed with unknown status code: {1}", request.Path, unityWebRequest.responseCode));
+                request.Error = new RDataHttpException(string.Format("Http request {0} failed with unknown status code: {1}", request.Path, unityWebRequest.responseCode), request.Response.Error);
                 yield break;
             }
-
-            Debug.Log(string.Format("RDataHttpClient Recv, Method: {0}, Path: {1}, Response: {2}", request.Method, request.Path, unityWebRequest.downloadHandler.text));
 
             // Everything is fine at this point
         }

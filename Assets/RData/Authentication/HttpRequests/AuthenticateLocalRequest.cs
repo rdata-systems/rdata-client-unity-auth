@@ -8,7 +8,7 @@ namespace RData.Authentication.HttpRequests
 {
     public class AuthenticateLocalRequest : RDataHttpRequest<AuthenticateLocalRequest.AuthenticateLocalResponse>
     {
-        public class AuthenticateLocalResponse
+        public class AuthenticateLocalResponse : RDataHttpResponse
         {
             public string refreshToken;
             public string accessToken;

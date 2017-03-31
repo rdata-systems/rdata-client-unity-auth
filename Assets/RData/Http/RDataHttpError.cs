@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RData.LitJson;
 
 namespace RData.Http
 {
     public class RDataApiError
     {
-        public string message;
-        public string name;
+        [JsonAlias("message")]
+        public string Message { get; set; }
+
+        [JsonAlias("name")]
+        public string Name { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace RData.Authentication.HttpRequests
 {
     public class RefreshRequest : RDataHttpRequest<RefreshRequest.RefreshResponse>
     {
-        public class RefreshResponse
+        public class RefreshResponse : RDataHttpResponse
         {
             public string accessToken;
         }

@@ -7,7 +7,7 @@ namespace RData.Authentication.HttpRequests
 {
     public class RevokeRequest : RDataHttpRequest<RevokeRequest.RevokeResponse>
     {
-        public class RevokeResponse
+        public class RevokeResponse : RDataHttpResponse
         {
             public bool result;
         }

@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 namespace RData.Http
 {
     public abstract class RDataHttpRequest<TResponse>
+        where TResponse : RDataHttpResponse
     {
         public const string kHttpVerbCREATE = UnityWebRequest.kHttpVerbCREATE;
         public const string kHttpVerbDELETE = UnityWebRequest.kHttpVerbDELETE;
