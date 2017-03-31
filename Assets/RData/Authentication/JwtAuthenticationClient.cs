@@ -101,6 +101,8 @@ namespace RData.Authentication
 
         public IEnumerator Authenticate(string username, string password)
         {
+            LastError = null;
+
             if (Authenticated)
             {
                 LastError = new RDataAuthenticationException("Failed to Authenticate - already authenticated. Call Revoke() to Revoke the previous authentication");
@@ -147,6 +149,8 @@ namespace RData.Authentication
 
         public IEnumerator Register(string username, string email, string password)
         {
+            LastError = null;
+
             // Send registration request
             var localRegistrationRequest = new RegisterLocalRequest(username, email, password);
             yield return StartCoroutine(_httpClient.Send<RegisterLocalRequest, RegisterLocalRequest.RegisterLocalResponse>(localRegistrationRequest));
@@ -184,6 +188,8 @@ namespace RData.Authentication
 
         public IEnumerator Revoke()
         {
+            LastError = null;
+
             if (!Authenticated)
             {
                 LastError = new RDataAuthenticationException("You need to be authenticated to Revoke the authentication");
@@ -218,6 +224,8 @@ namespace RData.Authentication
 
         public IEnumerator Refresh()
         {
+            LastError = null;
+
             if (!Authenticated)
             {
                 LastError = new RDataAuthenticationException("You need to be authenticated to Revoke the authentication");
