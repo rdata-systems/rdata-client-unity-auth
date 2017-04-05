@@ -5,7 +5,6 @@ using System;
 using RData.Http;
 using RData.Authentication.Exceptions;
 using RData.Authentication.HttpRequests;
-using JWT;
 using RData.LitJson;
 
 namespace RData.Authentication
@@ -29,8 +28,8 @@ namespace RData.Authentication
             public JwtUser user;
             public string refreshToken;
             public string accessToken;
-            public long refreshTokenExpiresAt; // In seconds since Unix Epoch, UTC
-            public long accessTokenExpiresAt; // In seconds since Unix Epoch, UTC
+            public long refreshTokenExpiresAt; // In milliseconds since Unix Epoch, UTC
+            public long accessTokenExpiresAt; // In milliseconds since Unix Epoch, UTC
         }
 
         protected AuthenticationInfo _authenticationInfo;
@@ -64,12 +63,12 @@ namespace RData.Authentication
 
         public DateTime RefreshTokenExpiresAt
         {
-            get { return Tools.Time.UnixTimeSecondsToDateTime(_authenticationInfo.refreshTokenExpiresAt); }
+            get { return Tools.Time.UnixTimeMillisecondsToDateTime(_authenticationInfo.refreshTokenExpiresAt); }
         }
 
         public DateTime AccessTokenExpiresAt
         {
-            get { return Tools.Time.UnixTimeSecondsToDateTime(_authenticationInfo.accessTokenExpiresAt); }
+            get { return Tools.Time.UnixTimeMillisecondsToDateTime(_authenticationInfo.accessTokenExpiresAt); }
         }
         
         public bool RefreshTokenExpired
@@ -135,13 +134,9 @@ namespace RData.Authentication
 
             _authenticationInfo.accessToken = localAuthRequest.Response.accessToken;
             _authenticationInfo.refreshToken = localAuthRequest.Response.refreshToken;
-
-            var jwtRefreshToken = DecodeJwtToken<JwtRefreshToken>(_authenticationInfo.refreshToken);
-            var jwtAccessToken = DecodeJwtToken<JwtAccessToken>(_authenticationInfo.accessToken);
-
-            _authenticationInfo.user = jwtRefreshToken.user;
-            _authenticationInfo.refreshTokenExpiresAt = jwtRefreshToken.exp;
-            _authenticationInfo.accessTokenExpiresAt = jwtAccessToken.exp;
+            _authenticationInfo.user = localAuthRequest.Response.user;
+            _authenticationInfo.refreshTokenExpiresAt = localAuthRequest.Response.refreshTokenExpiresAt;
+            _authenticationInfo.accessTokenExpiresAt = localAuthRequest.Response.accessTokenExpiresAt;
             
             // Save into player prefs
             SaveToPlayerPrefs();
@@ -254,20 +249,8 @@ namespace RData.Authentication
             }
             
             _authenticationInfo.accessToken = refreshRequest.Response.accessToken;
-
-            JwtAccessToken jwtAccessToken;
-            try
-            {
-                jwtAccessToken = DecodeJwtToken<JwtAccessToken>(_authenticationInfo.accessToken);
-            }
-            catch (RDataAuthenticationException e)
-            {
-                LastError = e;
-                yield break;
-            }
-
-            _authenticationInfo.accessTokenExpiresAt = jwtAccessToken.exp;
-            _authenticationInfo.user = jwtAccessToken.user; // Role or other user parameters might have updated
+            _authenticationInfo.accessTokenExpiresAt = refreshRequest.Response.accessTokenExpiresAt;
+            _authenticationInfo.user = refreshRequest.Response.user; // Role or other user parameters might have updated
             SaveToPlayerPrefs();
         }
         
@@ -301,35 +284,6 @@ namespace RData.Authentication
         {
             string authInfoJson = RData.LitJson.JsonMapper.ToJson(_authenticationInfo);
             PlayerPrefs.SetString(kPlayerPrefsKey, authInfoJson);
-        }
-
-        private TJwtToken DecodeJwtToken<TJwtToken>(string token)
-            where TJwtToken : JwtToken
-        {
-            string payLoad;
-            TJwtToken decodedToken;
-
-            try
-            {
-                payLoad = JsonWebToken.Decode(token, "", false);
-            }
-            catch (System.Exception e)
-            {
-                LastError = new RDataAuthenticationException("Failed to authenticate, refreshToken is invalid", e);
-                throw LastError;
-            }
-
-            try
-            {
-                decodedToken = JsonMapper.ToObject<TJwtToken>(payLoad);
-            }
-            catch (RData.LitJson.JsonException e)
-            {
-                LastError = new RDataAuthenticationException("Failed to authenticate, refreshToken payload is not a valid json", e);
-                throw LastError;
-            }
-
-            return decodedToken;
         }
     }
 }

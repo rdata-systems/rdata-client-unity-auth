@@ -12,6 +12,9 @@ namespace RData.Authentication.HttpRequests
         {
             public string refreshToken;
             public string accessToken;
+            public long refreshTokenExpiresAt;
+            public long accessTokenExpiresAt;
+            public JwtUser user;
         }
 
         private string _username;

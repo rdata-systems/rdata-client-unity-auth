@@ -43,7 +43,7 @@ namespace RData.Authentication
             if (!_jwtAuthClient.Authenticated)
                 throw new RDataException(string.Format("You must call {0}.Authenticate before calling {1}.Authorize", typeof(JwtAuthenticationClient).Name, typeof(JwtAuthorizationStrategy).Name));
 
-            yield return CoroutineManager.StartCoroutine(SendAuthorizationRequest(_jwtAuthClient.AccessToken));
+            yield return CoroutineManager.StartCoroutine(SendAuthorizationRequest(_jwtAuthClient.AccessToken, _rDataClient.GameVersion));
 
             if (_rDataClient.Authorized)
                 _rDataClient.OnAuthorized();
@@ -68,12 +68,12 @@ namespace RData.Authentication
                 }
             }
 
-            yield return CoroutineManager.StartCoroutine(SendAuthorizationRequest(_jwtAuthClient.UserId));
+            yield return CoroutineManager.StartCoroutine(SendAuthorizationRequest(_jwtAuthClient.AccessToken, _rDataClient.GameVersion));
         }
 
-        private IEnumerator SendAuthorizationRequest(string accessToken)
+        private IEnumerator SendAuthorizationRequest(string accessToken, int gameVersion)
         {
-            var request = new RData.Authentication.JsonRpcRequests.JwtAuthorizationRequest(accessToken);
+            var request = new RData.Authentication.JsonRpcRequests.JwtAuthorizationRequest(accessToken, gameVersion);
             yield return CoroutineManager.StartCoroutine(_rDataClient.Send<RData.Authentication.JsonRpcRequests.JwtAuthorizationRequest, BooleanResponse>(request));
             if (request.Response.HasError)
             {

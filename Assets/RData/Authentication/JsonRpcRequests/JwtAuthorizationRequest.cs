@@ -27,15 +27,19 @@ namespace RData.Authentication.JsonRpcRequests
         {
             [RData.LitJson.JsonAlias("accessToken")]
             public string AccessToken { get; set; }
+
+            [RData.LitJson.JsonAlias("gameVersion")]
+            public int GameVersion { get; set; }
         }
 
         public JwtAuthorizationRequest() : base() { }
 
-        public JwtAuthorizationRequest(string accessToken) : base()
+        public JwtAuthorizationRequest(string accessToken, int gameVersion) : base()
         {
             Params = new Parameters()
             {
-                AccessToken = accessToken
+                AccessToken = accessToken,
+                GameVersion = gameVersion
             };
         }
     }

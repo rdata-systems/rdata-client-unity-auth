@@ -9,13 +9,24 @@ namespace RData.Http
 {
     public class RDataHttpClient : MonoBehaviour
     {
-        public string m_hostName = "http://localhost:80/";
+        public enum Stage { development, testing, production };
+        
+        public Stage m_stage = Stage.development;
+        public string m_hostNameDevelopment = "http://localhost:9000/api/v1";
+        public string m_hostNameTesting = "";
+        public string m_hostNameProduction = "";
 
         private string HostName
         {
             get
             {
-                return RemoveTrailingSlash(m_hostName);
+                switch (m_stage)
+                {
+                    default:
+                    case Stage.development: return RemoveTrailingSlash(m_hostNameDevelopment);
+                    case Stage.testing: return RemoveTrailingSlash(m_hostNameTesting);
+                    case Stage.production: return RemoveTrailingSlash(m_hostNameProduction);
+                }
             }
         }
 
@@ -118,7 +129,7 @@ namespace RData.Http
         private string RemoveTrailingSlash(string str)
         {
             int lastSlash = str.LastIndexOf('/');
-            str = (lastSlash > -1) ? str.Substring(0, lastSlash) : str;
+            str = (lastSlash == str.Length - 1) ? str.Substring(0, lastSlash) : str;
             return str;
         }
     }

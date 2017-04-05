@@ -10,6 +10,8 @@ namespace RData.Authentication.HttpRequests
         public class RefreshResponse : RDataHttpResponse
         {
             public string accessToken;
+            public long accessTokenExpiresAt;
+            public JwtUser user;
         }
 
         private string _refreshToken;

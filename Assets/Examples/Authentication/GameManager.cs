@@ -115,18 +115,24 @@ namespace RData.Authentication.Examples
             SetFormInteractable(false);
             SetStatus(kStatusSendingRevokeRequest);
 
-            yield return StartCoroutine(_authenticationClient.Revoke());
+            yield return StartCoroutine(RDataSingleton.instance.Restart());
 
-            // Check if any errors happened during revoke
-            if (_authenticationClient.HasError)
+
+            if (_authenticationClient.Authenticated)
             {
-                SetError(_authenticationClient.LastError);
-                SetStatus(kStatusRevokeFailed);
-                SetFormInteractable(true);
-                yield break;
-            }
+                yield return StartCoroutine(_authenticationClient.Revoke());
 
-            SetStatus(kStatusRevokeSuccessful);
+                // Check if any errors happened during revoke
+                if (_authenticationClient.HasError)
+                {
+                    SetError(_authenticationClient.LastError);
+                    SetStatus(kStatusRevokeFailed);
+                    SetFormInteractable(true);
+                    yield break;
+                }
+
+                SetStatus(kStatusRevokeSuccessful);
+            }
             SetFormInteractable(true);
         }
 
