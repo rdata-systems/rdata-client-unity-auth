@@ -29,6 +29,8 @@ namespace RData.Authentication
 
         public JsonRpcError<string> LastError { get; private set; }
 
+        public bool HasError { get { return LastError != null; } }
+
         public JwtAuthorizationStrategy(RDataClient rRataClient, JwtAuthenticationClient jwtAuthClient)
         {
             _rDataClient = rRataClient;
