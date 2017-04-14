@@ -73,6 +73,11 @@ namespace RData.Authentication
             yield return CoroutineManager.StartCoroutine(SendAuthorizationRequest(_jwtAuthClient.AccessToken, _rDataClient.GameVersion));
         }
 
+        public void ResetAuthorization()
+        {
+            Authorized = false;
+        }
+
         private IEnumerator SendAuthorizationRequest(string accessToken, int gameVersion)
         {
             var request = new RData.Authentication.JsonRpcRequests.JwtAuthorizationRequest(accessToken, gameVersion);
