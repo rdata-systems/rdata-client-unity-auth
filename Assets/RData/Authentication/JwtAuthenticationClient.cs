@@ -30,6 +30,7 @@ namespace RData.Authentication
             public string accessToken;
             public long refreshTokenExpiresAt; // In milliseconds since Unix Epoch, UTC
             public long accessTokenExpiresAt; // In milliseconds since Unix Epoch, UTC
+            public string[] selectedGroups; // Groups selected by user to participate in. Null by default
         }
 
         protected AuthenticationInfo _authenticationInfo;
@@ -79,6 +80,16 @@ namespace RData.Authentication
         public bool AccessTokenExpired
         {
             get { return DateTime.UtcNow > AccessTokenExpiresAt; }
+        }
+
+        public string[] SelectedGroups
+        {
+            get { return _authenticationInfo.selectedGroups; }
+            set
+            {
+                _authenticationInfo.selectedGroups = value;
+                SaveToPlayerPrefs();
+            }
         }
 
         public bool Authenticated
@@ -253,8 +264,8 @@ namespace RData.Authentication
             _authenticationInfo.user = refreshRequest.Response.user; // Role or other user parameters might have updated
             SaveToPlayerPrefs();
         }
-        
-        private void ResetValues()
+
+        public void ResetValues()
         {
             _authenticationInfo = new AuthenticationInfo();
             SaveToPlayerPrefs();

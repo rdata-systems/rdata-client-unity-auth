@@ -1,4 +1,6 @@
 ﻿using RData.LitJson;
+using System;
+using System.Collections.Generic;
 
 namespace RData.Authentication
 {
@@ -7,9 +9,19 @@ namespace RData.Authentication
         public string id;
         public string email;
         public string username;
-        public string role;
+        public List<UserRole> roles;
 
-        [JsonIgnore] public const string kRoleUser = "user";
-        [JsonIgnore] public const string kRoleInstructor = "instructor";
+        public bool Can(UserRole.Role role, string game=null, string group=null)
+        {
+            foreach(var r in roles)
+            {
+                var userRole = r.GetRole(); // Get "Role" enum value
+                if ((userRole & role) == role && 
+                    (r.group == null || group == r.group) &&
+                    (r.game == null || game == r.game)) // Check
+                    return true;
+            }
+            return false;
+        }
     }
 }

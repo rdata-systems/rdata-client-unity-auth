@@ -74,6 +74,7 @@
     <Compile Include="Assets\RData\Authentication\JwtSession.cs" />
     <Compile Include="Assets\RData\Authentication\JwtToken.cs" />
     <Compile Include="Assets\RData\Authentication\JwtUser.cs" />
+    <Compile Include="Assets\RData\Authentication\UserRole.cs" />
     <Compile Include="Assets\RData\Http\Exceptions\BadRequestException.cs" />
     <Compile Include="Assets\RData\Http\Exceptions\ForbiddenException.cs" />
     <Compile Include="Assets\RData\Http\Exceptions\HttpException.cs" />
