@@ -296,5 +296,27 @@ namespace RData.Authentication
             string authInfoJson = RData.LitJson.JsonMapper.ToJson(_authenticationInfo);
             PlayerPrefs.SetString(kPlayerPrefsKey, authInfoJson);
         }
+
+        public IEnumerator EnsureValidAccessToken()
+        {
+            if (!Authenticated)
+            {
+                LastError = new RDataAuthenticationException("Not authenticated");
+                yield break;
+            }
+            
+            if(RefreshTokenExpired)
+            {
+                LastError = new RDataAuthenticationException("Refresh token expired");
+                yield break;
+            }
+
+            if (AccessTokenExpired)
+            {
+                yield return Refresh();
+            }
+
+            // AccessToken should now contain valid access token
+        }
     }
 }

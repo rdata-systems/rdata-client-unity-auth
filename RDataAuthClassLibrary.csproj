@@ -60,6 +60,8 @@
   <ItemGroup>
     <Compile Include="Assets\RData\Authentication\Exceptions\EmailTakenException.cs" />
     <Compile Include="Assets\RData\Authentication\Exceptions\InvalidCredentialsException.cs" />
+    <Compile Include="Assets\RData\Authentication\Exceptions\RDataServerNotAvailableException.cs" />
+    <Compile Include="Assets\RData\Authentication\Exceptions\RDataAuthorizationException.cs" />
     <Compile Include="Assets\RData\Authentication\Exceptions\RDataAuthenticationException.cs" />
     <Compile Include="Assets\RData\Authentication\Exceptions\UsernameTakenException.cs" />
     <Compile Include="Assets\RData\Authentication\HttpRequests\AuthenticateLocalRequest.cs" />
