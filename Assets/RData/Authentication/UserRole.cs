@@ -17,7 +17,10 @@ namespace RData.Authentication
             ReadWrite = 1 + 2,
             ReadData = 4,
             WriteData = 8,
-            ReadWriteData = 4 + 8
+            ReadWriteData = 4 + 8,
+            ReadConfigs = 5,
+            WriteConfigs = 10,
+            ReadWriteConfigs = 5 + 10,
         }
 
         public Role GetRole()
