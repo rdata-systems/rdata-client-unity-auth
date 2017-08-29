@@ -42,8 +42,19 @@ namespace RData.Http
             }
             else if (request.Method == UnityWebRequest.kHttpVerbPOST)
             {
-                unityWebRequest = UnityWebRequest.Post(HostName + request.Path, request.Parameters);
-            }
+				//original implementation 
+				//unityWebRequest = UnityWebRequest.Post(HostName + request.Path, request.Parameters);
+                 
+                //We must create a request manually to prevent the default form serialization that won't take strings longer than 36k chars
+                byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(SerializeSimpleForm(request.Parameters));
+				unityWebRequest = new UnityWebRequest(HostName + request.Path, UnityWebRequest.kHttpVerbPOST)
+                {
+                    uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw) { 
+                        contentType = "application/x-www-form-urlencoded"
+                    },                
+				    downloadHandler = (DownloadHandler)new DownloadHandlerBuffer()
+				};               
+			}
             else if (request.Method == UnityWebRequest.kHttpVerbPUT)
             {
                 unityWebRequest = UnityWebRequest.Put(HostName + request.Path, request.BodyData);
@@ -132,5 +143,27 @@ namespace RData.Http
             str = (lastSlash == str.Length - 1) ? str.Substring(0, lastSlash) : str;
             return str;
         }
+
+        /// <summary>
+        /// Serializes the simple form.
+        /// Mono mishandles this method traced through UnityWebRequest.Post > SerializeSimpleForm method, using 
+        /// Uri.EscapeDataString which checks length (for GET requests) but should not check for post form data.
+        ///
+        /// </summary>
+        /// <returns>The simple form.</returns>
+        /// <param name="formFields">Form fields.</param>
+        private string SerializeSimpleForm(Dictionary<string, string> formFields)
+        {
+            string text = "";
+            foreach (KeyValuePair<string, string> current in formFields)
+            {
+                if (text.Length > 0)
+                {
+                    text += "&";
+                }
+                text = text + (current.Key) + "=" + (current.Value);
+            }
+            return text;
+        }   
     }
 }
