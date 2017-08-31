@@ -42,19 +42,20 @@ namespace RData.Http
             }
             else if (request.Method == UnityWebRequest.kHttpVerbPOST)
             {
-				//original implementation 
-				//unityWebRequest = UnityWebRequest.Post(HostName + request.Path, request.Parameters);
-                 
+                //original implementation 
+                //unityWebRequest = UnityWebRequest.Post(HostName + request.Path, request.Parameters);
+
                 //We must create a request manually to prevent the default form serialization that won't take strings longer than 36k chars
                 byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(SerializeSimpleForm(request.Parameters));
-				unityWebRequest = new UnityWebRequest(HostName + request.Path, UnityWebRequest.kHttpVerbPOST)
+                unityWebRequest = new UnityWebRequest(HostName + request.Path, UnityWebRequest.kHttpVerbPOST)
                 {
-                    uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw) { 
+                    uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw)
+                    {
                         contentType = "application/x-www-form-urlencoded"
-                    },                
-				    downloadHandler = (DownloadHandler)new DownloadHandlerBuffer()
-				};               
-			}
+                    },
+                    downloadHandler = (DownloadHandler)new DownloadHandlerBuffer()
+                };
+            }
             else if (request.Method == UnityWebRequest.kHttpVerbPUT)
             {
                 unityWebRequest = UnityWebRequest.Put(HostName + request.Path, request.BodyData);
@@ -89,17 +90,24 @@ namespace RData.Http
                 yield break;
             }
 
-            Debug.Log(string.Format("RDataHttpClient Recv, Method: {0}, Path: {1}, Response: {2}", request.Method, request.Path, unityWebRequest.downloadHandler.text));
+			string downloadHandlerResponseText = "";
+
+			if (unityWebRequest.downloadHandler != null)
+			{
+				downloadHandlerResponseText = unityWebRequest.downloadHandler.text;
+            }
+           
+            Debug.Log(string.Format("RDataHttpClient Recv, Method: {0}, Path: {1}, Response: {2}", request.Method, request.Path, downloadHandlerResponseText));
 
             request.ResponseCode = unityWebRequest.responseCode;
 
             try
             {
-                request.Response = RData.LitJson.JsonMapper.ToObject<TResponse>(unityWebRequest.downloadHandler.text);
+                request.Response = RData.LitJson.JsonMapper.ToObject<TResponse>(downloadHandlerResponseText);
             }
             catch (RData.LitJson.JsonException e)
             {
-                request.Error = new RDataHttpException(string.Format("Http request {0} failed to parse json response: {1}", request.Path, unityWebRequest.downloadHandler.text), e);
+                request.Error = new RDataHttpException(string.Format("Http request {0} failed to parse json response: {1}", request.Path, downloadHandlerResponseText), e);
                 yield break;
             }
 
