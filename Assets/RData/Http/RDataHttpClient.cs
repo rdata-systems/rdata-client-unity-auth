@@ -58,7 +58,19 @@ namespace RData.Http
             }
             else if (request.Method == UnityWebRequest.kHttpVerbPUT)
             {
-                unityWebRequest = UnityWebRequest.Put(HostName + request.Path, request.BodyData);
+				//original implementation 
+				//unityWebRequest = UnityWebRequest.Put(HostName + request.Path, request.BodyData);
+
+				//We must create a request manually to prevent the default form serialization that won't take strings longer than 36k chars
+				byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(SerializeSimpleForm(request.Parameters));
+				unityWebRequest = new UnityWebRequest(HostName + request.Path, UnityWebRequest.kHttpVerbPUT)
+				{
+					uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw)
+					{
+						contentType = "application/x-www-form-urlencoded"
+					},
+					downloadHandler = (DownloadHandler)new DownloadHandlerBuffer()
+				};
             }
             else if (request.Method == UnityWebRequest.kHttpVerbDELETE)
             {
